@@ -147,6 +147,17 @@ stages:
       inputs:
         PathtoPublish: '$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment'  # Full path to the folder
         ArtifactName: arm
+    - task: PowerShell@2
+      displayName: 'List files in AzureResourceGroupDeployment directory'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $path = "$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment"
+          if (Test-Path $path) {
+              Get-ChildItem $path
+          } else {
+              Write-Host "Directory does not exist: $path"
+          }
 
 
 - stage: Dev_Stage
@@ -217,7 +228,7 @@ stages:
       inputs:
         deploymentScope: 'Resource Group'
         azureResourceManagerConnection: 'azure-cli-2024-10-14-06-24-51'
-        subscriptionId: '4b72ed90-7ca3-4e76-8d0f-31a2c0bee7a3'
+        subscriptionId: '7b8a3d36-3ab5-48ec-af10-5bbac36116e2'
         action: 'Create Or Update Resource Group'
         resourceGroupName: '$(ResourceGroupName)'
         location: 'West Europe'
