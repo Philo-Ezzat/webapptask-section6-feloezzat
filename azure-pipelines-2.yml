@@ -129,6 +129,10 @@ stages:
 
   - job: Infrastructure
     displayName: Publish Infra files
+    dependsOn:
+    - Selenium
+    - Database
+    - WebApp
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -147,12 +151,13 @@ stages:
       inputs:
         PathtoPublish: '$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment'  # Full path to the folder
         ArtifactName: arm
+
     - task: PowerShell@2
-      displayName: 'List files in AzureResourceGroupDeployment directory'
+      displayName: 'List files in  directory'
       inputs:
         targetType: 'inline'
         script: |
-          $path = "$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment"
+          $path = "$(System.DefaultWorkingDirectory)"
           if (Test-Path $path) {
               Get-ChildItem $path
           } else {
@@ -185,6 +190,18 @@ stages:
     steps:
 
     - checkout: none
+
+    - task: PowerShell@2
+      displayName: 'List files in AzureResourceGroupDeployment directory'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $path = "$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment"
+          if (Test-Path $path) {
+              Get-ChildItem $path
+          } else {
+              Write-Host "Directory does not exist: $path"
+          }
     - task: DownloadBuildArtifacts@0
       displayName: Download ARM templates
       inputs:
