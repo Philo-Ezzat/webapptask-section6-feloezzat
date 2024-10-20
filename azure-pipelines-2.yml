@@ -171,7 +171,7 @@ stages:
     SqlServerName: '$(Prefix)-sql-$(Release.EnvironmentName)-$(UniqueId)'
     Prefix: 'tunis'
     Release.EnvironmentName: 'dev'
-    UniqueId: '1280' #'$(Build.BuildId)'
+    UniqueId: '$(Build.BuildId)'
     hostingPlanName: '$(Prefix)-service-plan'
 
   jobs:
