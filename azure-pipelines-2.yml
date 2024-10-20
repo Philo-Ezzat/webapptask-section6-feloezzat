@@ -132,12 +132,19 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    
+    - task: Bash@3
+      displayName: 'Create AzureResourceGroupDeployment folder'
+      inputs:
+        targetType: 'inline'
+        script: |
+          mkdir -p $(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment
+
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: ARM templates'
       inputs:
-        PathtoPublish: AzureResourceGroupDeployment
+        PathtoPublish: '$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment'  # Full path to the folder
         ArtifactName: arm
+
 
 - stage: Dev_Stage
   displayName: Create & Deploy to Dev
