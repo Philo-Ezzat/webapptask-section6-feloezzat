@@ -178,7 +178,7 @@ stages:
       displayName: Download ARM templates
       inputs:
         artifactName: arm
-        downloadPath: $(System.DefaultWorkingDirectory)
+        downloadPath: $(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment
 
     - task: AzureResourceGroupDeployment@2
       displayName: Validate ARM templates
@@ -189,8 +189,8 @@ stages:
         resourceGroupName: '$(ResourceGroupName)'
         location: 'West Europe'
         templateLocation: 'Linked artifact'
-        csmFile: '$(System.DefaultWorkingDirectory)/arm/WebSiteSQLDatabase.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/arm/WebSiteSQLDatabase.parameters.json'
+        csmFile: '$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment/arm/WebSiteSQLDatabase.json'
+        csmParametersFile: '$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment/arm/WebSiteSQLDatabase.parameters.json'
         overrideParameters: '-hostingPlanName $(hostingPlanName) -skuName "F1" -skuCapacity 1 -administratorLogin $(Database.Admin) -administratorLoginPassword $(Database.Password) -databaseName $(Database.Name) -collation "SQL_Latin1_General_CP1_CI_AS" -edition "Basic" -maxSizeBytes "1073741824" -requestedServiceObjectiveName "Basic" -webSiteName $(WebAppName) -sqlserverName $(SqlServerName)'
         deploymentMode: 'Validation'
 
@@ -199,13 +199,13 @@ stages:
       displayName: Publish TTK Test Results
       inputs:
         testResultsFormat: 'NUnit'
-        testResultsFiles: '$(System.DefaultWorkingDirectory)\arm\results\*-armttk.xml'
+        testResultsFiles: '$(System.DefaultWorkingDirectory)\AzureResourceGroupDeployment\arm\results\*-armttk.xml'
       condition: always()
 
     - task: AzureCLI@2
       displayName: Preview Template Changes (What-If)
       inputs:
-        workingDirectory: $(System.DefaultWorkingDirectory)/arm/
+        workingDirectory: $(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment/arm/
         azureSubscription: 'azure-cli-2024-10-14-06-24-51'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
@@ -222,8 +222,8 @@ stages:
         resourceGroupName: '$(ResourceGroupName)'
         location: 'West Europe'
         templateLocation: 'Linked artifact'
-        csmFile: '$(System.DefaultWorkingDirectory)/arm/WebSiteSQLDatabase.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/arm/WebSiteSQLDatabase.parameters.json'
+        csmFile: '$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment/arm/WebSiteSQLDatabase.json'
+        csmParametersFile: '$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment/arm/WebSiteSQLDatabase.parameters.json'
         overrideParameters: '-hostingPlanName $(hostingPlanName) -skuName "F1" -skuCapacity 1 -administratorLogin $(Database.Admin) -administratorLoginPassword $(Database.Password) -databaseName $(Database.Name) -collation "SQL_Latin1_General_CP1_CI_AS" -edition "Basic" -maxSizeBytes "1073741824" -requestedServiceObjectiveName "Basic" -webSiteName $(WebAppName) -sqlserverName $(SqlServerName)'
         deploymentMode: 'Complete'
 
