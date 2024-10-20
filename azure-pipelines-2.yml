@@ -132,12 +132,15 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: Bash@3
+    - task: PowerShell@2
       displayName: 'Create AzureResourceGroupDeployment folder'
       inputs:
         targetType: 'inline'
         script: |
-          mkdir -p $(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment
+          $folderPath = "$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment"
+          if (-not (Test-Path -Path $folderPath)) {
+              New-Item -ItemType Directory -Path $folderPath
+          }
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: ARM templates'
