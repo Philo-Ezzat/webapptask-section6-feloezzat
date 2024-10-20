@@ -10,7 +10,6 @@ jobs:
     BuildConfiguration: release
   
   steps:
-  
   - task: UseDotNet@2
     displayName: Install .NET 6 sdk
     inputs:
@@ -24,7 +23,6 @@ jobs:
       command: restore
       projects: '**/WebApp.csproj'
   
-
   - task: DotNetCoreCLI@2
     displayName: Build
     inputs:
@@ -43,20 +41,18 @@ jobs:
     inputs:
       command: publish
       publishWebProjects: True
-      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactStagingDirectory)'
       zipAfterPublish: True
   
-
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact (WebApp.zip)'
     inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)'
+      PathtoPublish: '$(build.artifactStagingDirectory)'
 
 - job: Database
   displayName: 'Build Database'
   pool:
     vmImage: 'windows-2019'
-
   steps:
   - task: MSBuild@1
     displayName: 'Build solution WebApp.Database.sqlproj'
@@ -67,6 +63,7 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact (Dacpac)'
     inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: dacpac
 
 - job: Selenium
@@ -92,6 +89,7 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: UI-Test'
     inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'UI-Test'
 
 - job: Infrastructure
@@ -102,5 +100,5 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: ARM templates'
     inputs:
-      PathtoPublish: AzureResourceGroupDeployment
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment'
       ArtifactName: arm
