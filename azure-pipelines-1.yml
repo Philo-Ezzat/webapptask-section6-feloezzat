@@ -78,12 +78,12 @@ jobs:
   - task: NuGetCommand@2
     displayName: 'NuGet restore'
     inputs:
-      restoreSolution: WebAppWithDatabase.sln
+      restoreSolution: WebAppWithDatabaseDemo-master/WebAppWithDatabase.sln
 
   - task: MSBuild@1
     displayName: 'Build project SeleniumUiTests.csproj'
     inputs:
-      solution: SeleniumUiTests/SeleniumUiTests.csproj
+      solution: WebAppWithDatabaseDemo-master/SeleniumUiTests/SeleniumUiTests.csproj
       msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
 
   - task: PublishBuildArtifacts@1
