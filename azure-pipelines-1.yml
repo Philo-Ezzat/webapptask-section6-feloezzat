@@ -100,5 +100,5 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: ARM templates'
     inputs:
-      PathtoPublish: '$(System.DefaultWorkingDirectory)/AzureResourceGroupDeployment'
+      PathtoPublish: '$(System.DefaultWorkingDirectory)'
       ArtifactName: arm
